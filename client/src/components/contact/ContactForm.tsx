@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from "@emailjs/browser";
+import { apiRequest } from "@/lib/queryClient";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -18,13 +18,6 @@ type ContactFormData = z.infer<typeof contactFormSchema>;
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
-  
-  // Initialize EmailJS when component mounts
-  useEffect(() => {
-    const userId = import.meta.env.VITE_EMAILJS_USER_ID || "";
-    console.log("EmailJS initialization with user ID available:", !!userId);
-    emailjs.init(userId);
-  }, []);
   
   const {
     register,
@@ -45,40 +38,21 @@ const ContactForm = () => {
     setIsSubmitting(true);
     
     try {
-      // Prepare the template parameters
-      const templateParams = {
-        from_name: data.name,
-        from_email: data.email,
-        subject: data.subject,
-        message: data.message
-      };
-      
-      // Log EmailJS environment availability
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "";
-      console.log("EmailJS credentials available:", {
-        hasServiceId: !!serviceId,
-        hasTemplateId: !!templateId,
+      // Use our apiRequest helper to send to the server
+      const result = await apiRequest({
+        url: '/api/contact',
+        method: 'POST',
+        data,
       });
       
-      // Send the email using EmailJS
-      const response = await emailjs.send(
-        serviceId,
-        templateId,
-        templateParams
-      );
+      // If we got here, the request was successful
+      toast({
+        title: "Message sent!",
+        description: "Thank you for reaching out. I'll get back to you soon.",
+        variant: "default",
+      });
       
-      if (response.status === 200) {
-        toast({
-          title: "Message sent!",
-          description: "Thank you for reaching out. I'll get back to you soon.",
-          variant: "default",
-        });
-        
-        reset();
-      } else {
-        throw new Error("Failed to send message");
-      }
+      reset();
     } catch (error) {
       console.error("Email error:", error);
       toast({

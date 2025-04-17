@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { sendEmail } from "./services/email.service";
 import { z } from "zod";
+import emailjs from '@emailjs/browser';
 
 const contactFormSchema = z.object({
   name: z.string().min(2),
@@ -12,48 +13,47 @@ const contactFormSchema = z.object({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Endpoint to expose EmailJS credentials to the client-side securely
-  app.get("/api/emailjs-config", (req, res) => {
-    res.json({
-      serviceId: process.env.EMAILJS_SERVICE_ID || '',
-      templateId: process.env.EMAILJS_TEMPLATE_ID || '',
-      userId: process.env.EMAILJS_USER_ID || ''
-    });
-  });
-  // Contact form submission endpoint
+  // Contact form submission endpoint that uses EmailJS
   app.post("/api/contact", async (req, res) => {
     try {
       // Validate request body
       const validatedData = contactFormSchema.parse(req.body);
       
-      // Send email
-      await sendEmail({
-        to: "aakash@example.com", // Replace with actual email
-        subject: `Portfolio Contact: ${validatedData.subject}`,
-        text: `
-          Name: ${validatedData.name}
-          Email: ${validatedData.email}
-          
-          Message:
-          ${validatedData.message}
-        `,
-        html: `
-          <h3>New Contact Form Submission</h3>
-          <p><strong>Name:</strong> ${validatedData.name}</p>
-          <p><strong>Email:</strong> ${validatedData.email}</p>
-          <p><strong>Subject:</strong> ${validatedData.subject}</p>
-          <h4>Message:</h4>
-          <p>${validatedData.message}</p>
-        `
+      // Initialize EmailJS with our server-side credentials
+      emailjs.init(process.env.EMAILJS_USER_ID || "");
+      
+      // Prepare the email template parameters
+      const templateParams = {
+        from_name: validatedData.name,
+        from_email: validatedData.email,
+        subject: validatedData.subject,
+        message: validatedData.message
+      };
+      
+      console.log("Sending email via EmailJS with service and template IDs available:", {
+        serviceId: !!process.env.EMAILJS_SERVICE_ID,
+        templateId: !!process.env.EMAILJS_TEMPLATE_ID,
+        userId: !!process.env.EMAILJS_USER_ID
       });
       
-      res.status(200).json({ success: true, message: "Message sent successfully" });
+      // Send using EmailJS
+      const response = await emailjs.send(
+        process.env.EMAILJS_SERVICE_ID || "",
+        process.env.EMAILJS_TEMPLATE_ID || "",
+        templateParams
+      );
+      
+      if (response.status === 200) {
+        res.status(200).json({ success: true, message: "Message sent successfully" });
+      } else {
+        throw new Error("Failed to send message");
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(400).json({ success: false, message: "Invalid form data", errors: error.errors });
       }
       
-      console.error("Error sending message:", error);
+      console.error("Error sending email via EmailJS:", error);
       res.status(500).json({ success: false, message: "Failed to send message" });
     }
   });
