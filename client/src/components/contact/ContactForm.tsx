@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { initializeEmailjs, sendEmail } from "@/lib/emailjs";
+import emailjs from "@emailjs/browser";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -18,6 +18,13 @@ type ContactFormData = z.infer<typeof contactFormSchema>;
 const ContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  
+  // Initialize EmailJS when component mounts
+  useEffect(() => {
+    const userId = import.meta.env.VITE_EMAILJS_USER_ID || "";
+    console.log("EmailJS initialization with user ID available:", !!userId);
+    emailjs.init(userId);
+  }, []);
   
   const {
     register,
@@ -34,23 +41,6 @@ const ContactForm = () => {
     },
   });
 
-  // Initialize EmailJS and track initialization status
-  const [emailJSInitialized, setEmailJSInitialized] = useState(false);
-  
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const success = await initializeEmailjs();
-        setEmailJSInitialized(success);
-      } catch (error) {
-        console.error('Failed to initialize EmailJS:', error);
-        setEmailJSInitialized(false);
-      }
-    };
-    
-    init();
-  }, []);
-
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     
@@ -63,8 +53,20 @@ const ContactForm = () => {
         message: data.message
       };
       
-      // Send the email using our helper function
-      const response = await sendEmail(templateParams);
+      // Log EmailJS environment availability
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "";
+      console.log("EmailJS credentials available:", {
+        hasServiceId: !!serviceId,
+        hasTemplateId: !!templateId,
+      });
+      
+      // Send the email using EmailJS
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams
+      );
       
       if (response.status === 200) {
         toast({
