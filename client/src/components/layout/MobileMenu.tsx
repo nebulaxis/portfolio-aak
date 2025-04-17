@@ -43,27 +43,27 @@ const MobileMenu = ({ navLinks }: MobileMenuProps) => {
             <nav className="flex flex-col space-y-4">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
-                  <a 
+                  <div 
                     className={cn(
-                      "py-2 border-b border-[var(--card-color)]",
+                      "py-2 border-b border-[var(--card-color)] cursor-pointer",
                       location === link.href ? "text-primary" : ""
                     )}
                     onClick={closeMenu}
                   >
                     {link.label}
-                  </a>
+                  </div>
                 </Link>
               ))}
               
               <div className="flex items-center justify-between pt-2">
                 <ThemeToggle />
                 <Link href="/resume">
-                  <a 
-                    className="glow-button px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium"
+                  <div 
+                    className="glow-button px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium cursor-pointer"
                     onClick={closeMenu}
                   >
                     Resume
-                  </a>
+                  </div>
                 </Link>
               </div>
             </nav>

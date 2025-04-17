@@ -78,9 +78,9 @@ const Navbar = () => {
 
             {/* Resume Button */}
             <Link href="/resume">
-              <a className="glow-button px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium">
+              <div className="glow-button px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium cursor-pointer">
                 Resume
-              </a>
+              </div>
             </Link>
           </nav>
         </div>
