@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import emailjs from '@emailjs/browser';
+import { initializeEmailjs, sendEmail } from "@/lib/emailjs";
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -34,9 +34,21 @@ const ContactForm = () => {
     },
   });
 
-  // Initialize EmailJS with the user's credentials
+  // Initialize EmailJS and track initialization status
+  const [emailJSInitialized, setEmailJSInitialized] = useState(false);
+  
   useEffect(() => {
-    emailjs.init(import.meta.env.EMAILJS_USER_ID);
+    const init = async () => {
+      try {
+        const success = await initializeEmailjs();
+        setEmailJSInitialized(success);
+      } catch (error) {
+        console.error('Failed to initialize EmailJS:', error);
+        setEmailJSInitialized(false);
+      }
+    };
+    
+    init();
   }, []);
 
   const onSubmit = async (data: ContactFormData) => {
@@ -51,12 +63,8 @@ const ContactForm = () => {
         message: data.message
       };
       
-      // Send the email using EmailJS with the user's credentials
-      const response = await emailjs.send(
-        import.meta.env.EMAILJS_SERVICE_ID,
-        import.meta.env.EMAILJS_TEMPLATE_ID,
-        templateParams
-      );
+      // Send the email using our helper function
+      const response = await sendEmail(templateParams);
       
       if (response.status === 200) {
         toast({

@@ -12,6 +12,14 @@ const contactFormSchema = z.object({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Endpoint to expose EmailJS credentials to the client-side securely
+  app.get("/api/emailjs-config", (req, res) => {
+    res.json({
+      serviceId: process.env.EMAILJS_SERVICE_ID || '',
+      templateId: process.env.EMAILJS_TEMPLATE_ID || '',
+      userId: process.env.EMAILJS_USER_ID || ''
+    });
+  });
   // Contact form submission endpoint
   app.post("/api/contact", async (req, res) => {
     try {
