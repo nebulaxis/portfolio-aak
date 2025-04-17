@@ -7,7 +7,147 @@
     @apply border-border;
   }
 
-  body {
-    @apply font-sans antialiased bg-background text-foreground;
+  :root {
+    --primary: #0ea5e9; /* Sky blue */
+    --primary-rgb: 14, 165, 233;
+    --secondary: #8b5cf6; /* Purple */
+    --secondary-rgb: 139, 92, 246;
+    
+    /* Light theme variables */
+    --background-color: #f8f9fa;
+    --surface-color: #ffffff;
+    --card-color: #ffffff;
+    --bg-color: #f1f5f9;
+    --text-color: #0f172a;
+    --text-muted: #475569;
+    --border-color: #e2e8f0;
+    
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
+  
+  [data-theme="dark"] {
+    --background-color: #0f172a;
+    --surface-color: #1e293b;
+    --card-color: #1e293b;
+    --bg-color: #0f172a;
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #334155;
+    
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--bg-color);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--secondary), var(--primary));
+  }
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: brightness(1) drop-shadow(0 0 5px rgba(var(--primary-rgb), 0.5));
+  }
+  50% {
+    filter: brightness(1.2) drop-shadow(0 0 15px rgba(var(--primary-rgb), 0.8));
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility classes */
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+.spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Custom cursor styling */
+.custom-cursor-dot {
+  pointer-events: none;
+  z-index: 9999;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.custom-cursor-outline {
+  pointer-events: none;
+  z-index: 9998;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(var(--primary-rgb), 0.4);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, transform 0.1s;
+}
+
+/* Interactive elements for the cursor */
+a, button, [role="button"], input, select, textarea, .interactive {
+  cursor: none;
+}
+
+a:hover ~ .custom-cursor-outline,
+button:hover ~ .custom-cursor-outline,
+[role="button"]:hover ~ .custom-cursor-outline,
+input:hover ~ .custom-cursor-outline,
+textarea:hover ~ .custom-cursor-outline,
+.interactive:hover ~ .custom-cursor-outline {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(var(--secondary-rgb), 0.6);
+  background-color: rgba(var(--secondary-rgb), 0.1);
 }
