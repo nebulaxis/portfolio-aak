@@ -98,15 +98,11 @@ const HeroSection = () => {
               className="flex flex-wrap gap-4 mt-8"
               variants={itemVariants}
             >
-              <Link href="/projects">
-                <a className="glow-button px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium inline-block">
-                  View My Work
-                </a>
+              <Link href="/projects" className="glow-button px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white rounded-lg font-medium inline-block">
+                View My Work
               </Link>
-              <Link href="/resume">
-                <a className="px-6 py-3 border border-primary text-primary hover:bg-primary hover:bg-opacity-10 rounded-lg font-medium transition-colors inline-block">
-                  Download Resume
-                </a>
+              <Link href="/resume" className="px-6 py-3 border border-primary text-primary hover:bg-primary hover:bg-opacity-10 rounded-lg font-medium transition-colors inline-block">
+                Download Resume
               </Link>
             </motion.div>
           </motion.div>
