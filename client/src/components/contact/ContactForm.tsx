@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from '@emailjs/browser';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters" }),
@@ -34,20 +34,43 @@ const ContactForm = () => {
     },
   });
 
+  // Initialize EmailJS with the user's credentials
+  useEffect(() => {
+    emailjs.init(import.meta.env.EMAILJS_USER_ID);
+  }, []);
+
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
     
     try {
-      await apiRequest("POST", "/api/contact", data);
+      // Prepare the template parameters
+      const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        subject: data.subject,
+        message: data.message
+      };
       
-      toast({
-        title: "Message sent!",
-        description: "Thank you for reaching out. I'll get back to you soon.",
-        variant: "default",
-      });
+      // Send the email using EmailJS with the user's credentials
+      const response = await emailjs.send(
+        import.meta.env.EMAILJS_SERVICE_ID,
+        import.meta.env.EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
       
-      reset();
+      if (response.status === 200) {
+        toast({
+          title: "Message sent!",
+          description: "Thank you for reaching out. I'll get back to you soon.",
+          variant: "default",
+        });
+        
+        reset();
+      } else {
+        throw new Error("Failed to send message");
+      }
     } catch (error) {
+      console.error("Email error:", error);
       toast({
         title: "Error sending message",
         description: "Please try again later or contact me directly via email.",

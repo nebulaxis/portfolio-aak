@@ -7,13 +7,11 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <Link href="/">
-              <a className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">AD</span>
-                </div>
-                <span className="text-lg font-bold font-heading">Aakash Dhar Dubey</span>
-              </a>
+            <Link href="/" className="flex items-center space-x-2">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                <span className="text-white font-bold text-xs">AD</span>
+              </div>
+              <span className="text-lg font-bold font-heading">Aakash Dhar Dubey</span>
             </Link>
           </div>
           
