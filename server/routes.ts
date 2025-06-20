@@ -69,141 +69,135 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(200).send("This is a placeholder for the resume PDF content");
   });
 
-  // Resume view endpoint
-  app.get("/api/resume-view", (req, res) => {
-    // In a real implementation, this would display the resume
-    res.setHeader('Content-Type', 'text/html');
-    
-    // Send an HTML representation of the resume
-    res.status(200).send(`
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Aakash Dhar Dubey - Resume</title>
-        <style>
-          body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-          }
-          .resume-container {
-            max-width: 800px;
-            margin: 0 auto;
-          }
-          h1 {
-            color: #00a3e0;
-            border-bottom: 2px solid #00a3e0;
-            padding-bottom: 10px;
-          }
-          h2 {
-            color: #0077b5;
-            margin-top: 20px;
-          }
-          .section {
-            margin-bottom: 25px;
-          }
-          .position {
-            font-weight: bold;
-          }
-          .date {
-            color: #666;
-            font-style: italic;
-          }
-          .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-          }
-          .skill {
-            background: #f0f0f0;
-            padding: 5px 10px;
-            border-radius: 3px;
-            font-size: 14px;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="resume-container">
-          <h1>Aakash Dhar Dubey</h1>
-          <p>Full Stack Developer | MERN Stack | Java Spring Boot | Microservices</p>
-          
-          <div class="section">
-            <h2>Professional Experience</h2>
-            <p class="position">Full Stack Developer at Tech Solutions Inc.</p>
-            <p class="date">2022 - Present</p>
-            <ul>
-              <li>Developed scalable web applications using the MERN stack</li>
-              <li>Implemented microservices architecture with Kafka</li>
-              <li>Worked on containerization using Docker and Kubernetes</li>
-              <li>Created efficient CI/CD pipelines for automated testing and deployment</li>
-            </ul>
-          </div>
-          
-          <div class="section">
-            <h2>Education</h2>
-            <p class="position">B.Tech in Computer Science</p>
-            <p>Arya College of Engineering & IT, Kukas</p>
-            <p class="date">2018 - 2022</p>
-          </div>
-          
-          <div class="section">
-            <h2>Certifications</h2>
-            <ul>
-              <li>Full Stack & Data Science - Goedhub Technologies (2021)</li>
-              <li>Machine Learning - Internshala</li>
-              <li>Ethical Hacking Workshop - IIT Jodhpur (2020)</li>
-            </ul>
-          </div>
-          
-          <div class="section">
-            <h2>Skills</h2>
-            <div class="skills">
-              <span class="skill">React.js</span>
-              <span class="skill">Node.js</span>
-              <span class="skill">Next.js</span>
-              <span class="skill">Express.js</span>
-              <span class="skill">MongoDB</span>
-              <span class="skill">Mongoose</span>
-              <span class="skill">Java</span>
-              <span class="skill">Spring Boot</span>
-              <span class="skill">Docker</span>
-              <span class="skill">Kubernetes</span>
-              <span class="skill">Microservices</span>
-              <span class="skill">Apache Kafka</span>
-              <span class="skill">CI/CD</span>
-              <span class="skill">AWS</span>
-              <span class="skill">Firebase</span>
-              <span class="skill">OAuth</span>
-              <span class="skill">RESTful APIs</span>
-              <span class="skill">Git</span>
-            </div>
-          </div>
-          
-          <div class="section">
-            <h2>Projects</h2>
-            <ul>
-              <li>Full Stack E-commerce Application</li>
-              <li>Authentication System with Firebase/OAuth</li>
-              <li>Microservices-based Architecture with Kafka</li>
-              <li>Shopify Custom App Integration</li>
-              <li>Static Site with Remix.js and Astro.js</li>
-              <li>Real-time Dashboard with WebSocket and Kafka</li>
-            </ul>
-          </div>
-          
-          <div class="section">
-            <h2>Contact</h2>
-            <p>Email: aakash@example.com</p>
-            <p>LinkedIn: linkedin.com/in/aakashdhar</p>
-            <p>GitHub: github.com/aakashdhar</p>
-            <p>Location: Jaipur, Rajasthan, India</p>
-          </div>
+// Resume view endpoint
+app.get("/api/resume-view", (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+
+  res.status(200).send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Aakash Dubey - Resume</title>
+      <style>
+        body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 20px;
+          color: #333;
+          background-color: #f8f9fa;
+        }
+        .resume-container {
+          max-width: 900px;
+          margin: 0 auto;
+          background: #fff;
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+          color: #007bff;
+          margin-bottom: 10px;
+        }
+        p, li {
+          line-height: 1.6;
+        }
+        .section {
+          margin-bottom: 30px;
+        }
+        .contact a {
+          color: #007bff;
+          text-decoration: none;
+        }
+        .skills span {
+          display: inline-block;
+          background: #e9ecef;
+          padding: 5px 10px;
+          border-radius: 4px;
+          margin: 5px;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="resume-container">
+        <h1>Aakash Dubey</h1>
+        <p><strong>Software Developer</strong></p>
+        <div class="section contact">
+          <p>Email: <a href="mailto:aakash.11dev@gmail.com">aakash.11dev@gmail.com</a></p>
+          <p>Phone: 9001234371</p>
+          <p>Location: Jaipur, India</p>
+          <p>GitHub: <a href="https://www.github.com/nebulaxis" target="_blank">github.com/nebulaxis</a></p>
+          <p>LinkedIn: <a href="https://www.linkedin.com/in/aakash-11dev" target="_blank">linkedin.com/in/aakash-11dev</a></p>
         </div>
-      </body>
-      </html>
-    `);
-  });
+
+        <div class="section">
+          <h2>Technical Skills</h2>
+          <p><strong>Languages & Frameworks:</strong> Java, Spring Boot, Spring MVC, Spring Security, Node.js, Express.js, React.js, Next.js, Redux, RESTful APIs, GraphQL</p>
+          <p><strong>Backend & API Development:</strong> JWT, OAuth2, Firebase Auth, Session Management, API Performance Optimization</p>
+          <p><strong>Frontend Technologies:</strong> React.js, Next.js, Tailwind CSS, Material UI, Bootstrap</p>
+          <p><strong>Databases:</strong> MySQL, MongoDB, ER Diagrams, Normalization</p>
+          <p><strong>DevOps & Tools:</strong> Git, GitHub, Docker, AWS (EC2, S3, Lambda), CI/CD pipelines, AI-powered tools</p>
+          <p><strong>Data & Visualization:</strong> Chart.js, D3.js, Advanced Excel</p>
+          <p><strong>Streaming & Messaging:</strong> Familiar with Apache Kafka and real-time messaging</p>
+        </div>
+
+        <div class="section">
+          <h2>Professional Experience</h2>
+          <p><strong>Associate Programmer</strong>, Dotsquare (Mar 2025 – Present)</p>
+          <ul>
+            <li>Developed a secure social media platform with Spring Boot & JWT</li>
+            <li>Implemented modular REST APIs and enhanced backend performance</li>
+          </ul>
+          <p><strong>Full Stack Developer</strong>, Blue Horse Tech Solutions (2024 – 2025)</p>
+          <ul>
+            <li>Built e-commerce platforms using MERN stack with Stripe & PayPal</li>
+            <li>Optimized APIs and implemented SSR for SEO</li>
+          </ul>
+          <p><strong>Java Desktop Application Developer</strong>, Professional Automotives (May 2023)</p>
+          <ul>
+            <li>Developed Java Swing/JavaFX desktop UIs for internal tools</li>
+            <li>Connected UIs to MySQL backend with secure CRUD</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Projects</h2>
+          <ul>
+            <li>Document Management System with JWT & Smart Search</li>
+            <li>Patient Health Tracking System with Spring Boot & Next.js</li>
+            <li>Full Stack Car Booking Platform deployed with Docker & CI/CD</li>
+            <li>Social Media Backend with Spring Boot, JWT, Session Management</li>
+            <li>Sentiment Analysis & AI Chatbot with Next.js and FastAPI</li>
+            <li>The Hiva Jewels Shopify Custom Site for SEO & Performance</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Education</h2>
+          <p><strong>B.Tech in Electronics & Communication Engineering</strong></p>
+          <p>Rajasthan Technical University, Jaipur (2018 – 2022)</p>
+          <p>XII (CBSE), Tagore Public School, Jaipur (2017 – 2018)</p>
+        </div>
+
+        <div class="section">
+          <h2>Certificates</h2>
+          <ul>
+            <li>Full Stack Developer - Udemy</li>
+            <li>Data Science - Goedhub Technologies</li>
+            <li>Ethical Hacking Workshop - IIT Jodhpur</li>
+            <li>Web Development - Learn Vern</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Interests</h2>
+          <p>Exploring microservices architecture trends and web performance optimization.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `);
+});
 
   const httpServer = createServer(app);
 

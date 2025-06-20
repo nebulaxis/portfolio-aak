@@ -6,6 +6,7 @@ import Hero3DCanvas from "./Hero3DCanvas";
 import ScrollIndicator from "./ScrollIndicator";
 import SocialLinks from "@/components/layout/SocialLinks";
 
+
 const HeroSection = () => {
   const typedRef = useRef<HTMLDivElement>(null);
   const typed = useRef<Typed | null>(null);
@@ -117,10 +118,10 @@ const HeroSection = () => {
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-r from-primary to-secondary p-1 overflow-hidden">
               <div className="w-full h-full rounded-full overflow-hidden bg-[var(--card-color)]">
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80"
-                  alt="Aakash Dhar Dubey"
-                  className="w-full h-full object-cover"
-                />
+    src="/profilepic.jpg"
+    alt="Aakash Dhar Dubey"
+    className="w-full h-full object-cover"
+  />
               </div>
               <motion.div
                 className="absolute -bottom-2 -right-2 bg-[var(--surface-color)] p-2 rounded-full border-2 border-secondary"
